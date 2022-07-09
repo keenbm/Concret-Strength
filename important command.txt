@@ -1,2 +1,45 @@
 mkdir folder name
 type NUL > EmptyFile.txt # for creating emply file
+
+2. DOCKER COMMANDS:
+
+'''bash
+BUILD DOCKER IMAGE
+Command : docker build -t <image_name>:<tag_name>
+
+List docker images :
+Command : docker images
+
+Run docker image :
+Command : docker -run -p 5000:5000 -e PORT=5000 <image-id>
+
+To Check running container in docker :  
+Command : docker ps
+
+
+To Stop docker container
+Command : docker stop <container_id>
+'''
+
+3. DVC
+'''bash
+TO Install DVC and Google Drive extention
+pip install dvc
+pip install dvc[gdrive]
+
+TO Initialize DVC
+dvc init
+
+TO Add data into dvc for tracking
+dvc add Training_Batch_Files/*.csv Prediction_Batch_files/*.csv
+
+To Add remote storage
+dvc remote add -d storage gdrive://<DRIVE ID>
+
+Push the data to the remote storage
+dvc push
+
+TO rerive data
+dvc pull
+
+'''
