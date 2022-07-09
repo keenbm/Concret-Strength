@@ -1,0 +1,2 @@
+mkdir folder name
+type NUL > EmptyFile.txt # for creating emply file

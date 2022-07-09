@@ -6,7 +6,7 @@
    #-p : create environemnt in current directory
    conda activate concret-venv/  # Activate virtual environment
    ```
-   
+
 2. Creating Project structure
    ```bash
    CONCRET-STRENGTH
@@ -44,11 +44,17 @@
    |   |  ├──_init_.py
    |   |  └──util.py
    |   └──_init_.py
-   |── notebook
+   ├── .github
+   |   └──workflows
+   |      └──main.yaml
+   |── notebooks
    |── app.py
    |── trial.py
    |── requirement.txt
    |── setup.py
    |── Dockerfile
+   |── .dockerignore
    └── README.md
    ```
+
+   3. 
