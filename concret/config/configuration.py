@@ -98,7 +98,7 @@ class Configuration():
             
             data_ingestion_info=self.config_info[DATA_INGESTION_CONFIG_KEY]
             
-            dataset_download_url=data_ingestion_info[DATA_INGESTION_DOWNLOAD_URL_KEY]
+            dataset_source_url=data_ingestion_info[DATA_INGESTION_DOWNLOAD_URL_KEY]
 
             # sample folder structure : concret\\artifact\\data_ingestion\\2022-07-09-23-12-32\\downloaded_data
             #                           concret\\artifact\\data_ingestion\\2022-07-09-23-12-32\\raw_data
@@ -126,7 +126,7 @@ class Configuration():
                                             data_ingestion_info[DATA_INGESTION_TEST_DIR_KEY])
             
             ## using DataIngestionConfig defined in entity > config_entity.py
-            data_ingestion_info=DataIngestionConfig(dataset_download_url = dataset_download_url,
+            data_ingestion_info=DataIngestionConfig(dataset_source_url=dataset_source_url,
                                                      download_dir=download_dir,
                                                      raw_data_dir=raw_data_dir,
                                                      ingested_train_dir=ingested_train_dir,

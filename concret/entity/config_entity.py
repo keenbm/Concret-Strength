@@ -2,11 +2,11 @@ from collections import namedtuple
 
 
 # For defining Named tuple skeleton for configuration related operation
-# In Code now we can use object for namedtuple a=DataIngestionConfig("dataset_download_url","tgz_download_dir","raw_data_dir","ingested_train_dir","ingested_test_dir")
+# In Code now we can use object for namedtuple a=DataIngestionConfig("dataset_source_url","tgz_download_dir","raw_data_dir","ingested_train_dir","ingested_test_dir")
 # This tyep of assigned basically creats structure for different different operation
 
 DataIngestionConfig=namedtuple("DataIngestionConfig",
-["dataset_download_url","download_dir","raw_data_dir","ingested_train_dir","ingested_test_dir"])
+["dataset_source_url","download_dir","raw_data_dir","ingested_train_dir","ingested_test_dir"])
 
 
 DataValidationConfig = namedtuple("DataValidationConfig", ["schema_file_path","report_file_path","report_page_file_path"])

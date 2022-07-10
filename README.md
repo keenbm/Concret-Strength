@@ -80,3 +80,10 @@
    10. coding python file under component folder once code for specific task is completed in configuration.py
        - i.e. once get_data_ingestion() methos is ready in configuration.py>Configuration class , start coding component>data_ingestion.py
        - Files in this folder created artifacts (actual data download and storage,tranin data , test data ,model creation and storage etc..) as per the configuration received from configuration.py
+
+   11. Coding Pipeline>pipeline.py
+       - In this code we crated pipeline() class
+       - pipeline() class consists of method slike start_data_ingestion,start_data_validation , start_model_trainer etc etc...
+       - Configuration() class object to be passed in pipeline class internal methods
+       - Also, data_ingestion(),data_validation() etc etc. classe object to be passed in pipeline class internal methods
+       - So, this file basically collect configuration and perform ML lifecycle task sequentialy

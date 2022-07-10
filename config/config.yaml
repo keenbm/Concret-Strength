@@ -3,7 +3,7 @@ training_pipeline_config:
   artifact_dir: artifact
 
 data_ingestion_config:
-  dataset_download_url: https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/compressive/Concrete_Data.xls
+  dataset_source_url: https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/compressive/Concrete_Data.xls
   raw_data_dir: raw_data
   download_dir: downloaded_data
   ingested_dir: ingested_data

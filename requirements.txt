@@ -13,4 +13,5 @@ ipykernel
 PyYAML
 dvc
 dill
+xlrd
 -e .

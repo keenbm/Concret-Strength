@@ -1,42 +1,26 @@
+column_name_map:
+  Cement (component 1)(kg in a m^3 mixture) : Cement
+  Blast Furnace Slag (component 2)(kg in a m^3 mixture) : Furnace_Slag
+  Fly Ash (component 3)(kg in a m^3 mixture): Fly_Ash
+  Water  (component 4)(kg in a m^3 mixture) : Water
+  Superplasticizer (component 5)(kg in a m^3 mixture): Superplasticizer
+  Coarse Aggregate  (component 6)(kg in a m^3 mixture): Coarse_Aggregate
+  Fine Aggregate (component 7)(kg in a m^3 mixture): Fine_Aggregate
+  Age (day) : Age
+  Concrete compressive strength(MPa, megapascals): Concrete_Compressive_Strength
+
+
 columns:
-  longitude: float
-  latitude: float
-  housing_median_age: float
-  total_rooms: float
-  total_bedrooms: float
-  population: float
-  households: float
-  median_income: float
-  median_house_value: float
-  ocean_proximity: category
+  Cement: float
+  Furnace_Slag: float
+  Fly_Ash: float
+  Water: float
+  Superplasticizer: float
+  Coarse_Aggregate: float
+  Fine_Aggregate: float
+  Age: float
+  Concrete_Compressive_Strength: float
 
-numerical_columns:
-  - longitude
-  - latitude
-  - housing_median_age
-  - total_rooms
-  - total_bedrooms
-  - population
-  - households
-  - median_income
-
-
-
-categorical_columns:
-  - ocean_proximity
-
-
-
-
-target_column: median_house_value
-
-domain_value:
-  ocean_proximity:
-    - <1H OCEAN
-    - INLAND
-    - ISLAND
-    - NEAR BAY
-    - NEAR OCEAN
-  
+Concrete_Compressive_Strength: Concrete_Compressive_Strength
 
 
