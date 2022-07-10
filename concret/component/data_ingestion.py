@@ -7,6 +7,7 @@ from concret.constant import *
 from concret.exception import CustomeException
 from concret.logger import logging
 import sys
+import os
 
 import tarfile
 from six.moves import urllib
@@ -22,7 +23,7 @@ class DataIngestion:
     DataIngestion class is having Methods/Functions for creating data ingestion realted artifacts
     '''    
 
-    def __init__(self,data_ingestion_config:DataIngestionConfig ):
+    def __init__(self,data_ingestion_config:DataIngestionConfig):
         '''
         When DataIngestion() class object is created , it'll get all configuration data from Configuration() class and
         and create data ingestion related artifact
@@ -63,7 +64,6 @@ class DataIngestion:
 
         except Exception as e:
             raise CustomeException(e,sys) from e        
-
 
 
     def extract_downloaded_data(self,downloaded_file_path):

@@ -57,33 +57,39 @@
    └── README.md
    ```
 
-   3. coding requirement.txt and setup.py
+3. coding requirement.txt and setup.py
 
-   4. coding Custome exception and logger
-      concret>exception>__init__.py
-      concret>logger>__init__.py
+4. coding Custome exception and logger
+   concret>exception>__init__.py
+   concret>logger>__init__.py
 
-   5. coding concret>constant>__init__.py
+5. coding concret>constant>__init__.py
 
-   6. coding config>config.yaml , schema.yaml , model.yaml
+6. coding config>config.yaml , schema.yaml , model.yaml
 
-   7. coding concret>entity artifact_entity.py , config_entity.py
+7. coding concret>entity artifact_entity.py , config_entity.py
 
-   8. coding concret>util>util.py for supporting functions
+8. coding concret>util>util.py for supporting functions
 
-   9. coding concret>config>configuration.py --> In this file Configuraiton() class is created. In Configuraiton() class diff. diff get method created to fetch/get diff. diff. task configuation.
-      - i.e. get_training_pipeline_config , get_data_ingestion_config , data_validation_config etc etc...
-      - all get_ methods are called in __init__ method of the class.
-      - So once Configuraiton() class object is created , all type of configuration data can be fetched from that class object
-      - Code in oncret>config>configuration.py creats only configuration (tuple with file path and any other details)
+9. coding concret>config>configuration.py --> In this file Configuraiton() class is created. In Configuraiton() class diff. diff get method created to fetch/get diff. diff. task configuation.
+   - i.e. get_training_pipeline_config , get_data_ingestion_config , data_validation_config etc etc...
+   - all get_ methods are called in __init__ method of the class.
+   - So once Configuraiton() class object is created , all type of configuration data can be fetched from that class object
+   - Code in oncret>config>configuration.py creats only configuration (tuple with file path and any other details)
 
-   10. coding python file under component folder once code for specific task is completed in configuration.py
-       - i.e. once get_data_ingestion() methos is ready in configuration.py>Configuration class , start coding component>data_ingestion.py
-       - Files in this folder created artifacts (actual data download and storage,tranin data , test data ,model creation and storage etc..) as per the configuration received from configuration.py
+10. coding python file under component folder once code for specific task is completed in configuration.py
+      - i.e. once get_data_ingestion() methos is ready in configuration.py>Configuration class , start coding component>data_ingestion.py
+      - Files in this folder created artifacts (actual data download and storage,tranin data , test data ,model creation and storage etc..) as per the configuration received from configuration.py
 
-   11. Coding Pipeline>pipeline.py
-       - In this code we crated pipeline() class
-       - pipeline() class consists of method slike start_data_ingestion,start_data_validation , start_model_trainer etc etc...
-       - Configuration() class object to be passed in pipeline class internal methods
-       - Also, data_ingestion(),data_validation() etc etc. classe object to be passed in pipeline class internal methods
-       - So, this file basically collect configuration and perform ML lifecycle task sequentialy
+11. Coding Pipeline>pipeline.py
+      - In this code we crated pipeline() class
+      - pipeline() class consists of method slike start_data_ingestion,start_data_validation , start_model_trainer etc etc...
+      - Configuration() class object to be passed in pipeline class internal methods
+      - Also, data_ingestion(),data_validation() etc etc. classe object to be passed in pipeline class internal methods
+      - So, this file basically collect configuration and perform ML lifecycle task sequentialy
+
+
+
+## Pending Items :
+- data_validation --> Checking details to be coded
+- data_validation --> Previous dataset Vs. Current dataset data drift checking code to be added
