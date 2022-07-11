@@ -21,6 +21,6 @@ columns:
   Age: float
   Concrete_Compressive_Strength: float
 
-Concrete_Compressive_Strength: Concrete_Compressive_Strength
+target_column: Concrete_Compressive_Strength
 
 

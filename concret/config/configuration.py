@@ -143,7 +143,6 @@ class Configuration():
  
 
 
-
     def get_data_validation_config(self) -> DataValidationConfig:
         '''
         Info:
@@ -184,10 +183,45 @@ class Configuration():
     def get_data_transformation_config(self) -> DataTransformationConfig:
         '''
         Info:
-
+        Use for Data preprocessing and Transformation Configuration
+        Creating and returning DataTransformationConfig
         '''
         try:
-            pass
+            artifact_dir = self.training_pipeline_config.artifact_dir
+
+            data_transformation_artifact_dir=os.path.join(
+                artifact_dir,
+                DATA_TRANSFORMATION_ARTIFACT_DIR,
+                self.time_stamp)
+
+            data_transformation_config_info=self.config_info[DATA_TRANSFORMATION_CONFIG_KEY]
+
+            add_new_col=data_transformation_config_info[DATA_TRANSFORMATION_ADD_NEW_COL_KEY]
+
+
+            preprocessed_object_file_path = os.path.join(data_transformation_artifact_dir,
+                                                        data_transformation_config_info[DATA_TRANSFORMATION_PREPROCESSING_DIR_KEY],
+                                                        data_transformation_config_info[DATA_TRANSFORMATION_PREPROCESSED_FILE_NAME_KEY])
+
+            
+            transformed_train_dir=os.path.join(data_transformation_artifact_dir,
+                                               data_transformation_config_info[DATA_TRANSFORMATION_DIR_NAME_KEY],
+                                               data_transformation_config_info[DATA_TRANSFORMATION_TRAIN_DIR_NAME_KEY])
+
+
+            transformed_test_dir = os.path.join(data_transformation_artifact_dir,
+                                                data_transformation_config_info[DATA_TRANSFORMATION_DIR_NAME_KEY],
+                                                data_transformation_config_info[DATA_TRANSFORMATION_TEST_DIR_NAME_KEY])
+            
+
+            data_transformation_config=DataTransformationConfig(add_new_col=add_new_col,
+                                                                preprocessed_object_file_path=preprocessed_object_file_path,
+                                                                transformed_train_dir=transformed_train_dir,
+                                                                transformed_test_dir=transformed_test_dir)
+
+            logging.info(f"Data transformation config: {data_transformation_config}")
+            
+            return data_transformation_config
         except Exception as e:
             raise CustomeException(e,sys) from e
 

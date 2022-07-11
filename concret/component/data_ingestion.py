@@ -82,7 +82,9 @@ class DataIngestion:
                 raw_data_frame=pd.read_csv(downloaded_file_path)
 
             raw_data_dir_file=os.path.join(raw_data_dir,"raw_data.csv")
-           
+            
+            # removing trailing and leading space in Column name before saving it
+            raw_data_frame.columns=raw_data_frame.columns.str.strip()
             raw_data_frame.to_csv(raw_data_dir_file,index = False)
 
             #os.popen('copy downloaded_file_path raw_data_dir') # Copying downloaded file to raw data folder           
@@ -113,14 +115,14 @@ class DataIngestion:
             train_set, test_set= train_test_split(raw_data_frame,random_state=42, train_size = .80)
 
             ## Creating TRAIN file path and storing csv
-            train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,file_name)
+            train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,"train_data.csv")
             if train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
                 train_set.to_csv(train_file_path,index=False)
 
 
             ## Creating Test file path and storing csv
-            test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,file_name)
+            test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,"test_data.csv")
             if test_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_test_dir,exist_ok=True)
                 test_set.to_csv(test_file_path,index=False)

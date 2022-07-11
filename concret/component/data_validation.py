@@ -3,6 +3,7 @@ from concret.entity.artifact_entity import DataValidationArtifact
 
 ## Importing constans from constant module
 from concret.constant import *
+from concret.util.util import read_yaml_file
 
 from concret.exception import CustomeException
 from concret.logger import logging
@@ -24,7 +25,7 @@ class DataValidation:
     DataIngestion class is having Methods/Functions for creating data validation realted artifacts
     '''  
 
-    def __init__(self,data_validation_config:DataValidationArtifact,
+    def __init__(self,data_validation_config:DataValidationConfig,
                 data_ingestion_artifact:DataValidationArtifact):
         try:
             logging.info(f"{'>>'*30}Data Valdaition log started.{'<<'*30} \n\n")
@@ -73,15 +74,40 @@ class DataValidation:
         Also Change Column names as per schema
         '''
         try:
+            
             schema_validation_status = False
+            schema_file_path = self.data_validation_config.schema_file_path
+            dataset_schema = read_yaml_file(file_path=schema_file_path)
+            original_col_name=list(dataset_schema[DATA_VALIDATION_COL_NAME_MAP_KEY].keys())
+            new_col_name=list(dataset_schema[DATA_VALIDATION_COL_NAME_MAP_KEY].values())
+
+            ## 1. Checking columns Names
+            train_df,test_df = self.get_train_and_test_df()
+            
+            if (list(train_df.columns) == list(test_df.columns) == original_col_name):
+                train_df.columns=new_col_name
+                train_df.to_csv(self.data_ingestion_artifact.train_file_path,index = False)
+                
+                test_df.columns=new_col_name
+                test_df.to_csv(self.data_ingestion_artifact.test_file_path,index = False)
+
+                schema_validation_status = True
+                logging.info("schema column name validation SUCCESSFUL")
+
+            else:
+                schema_validation_status = False
+                logging.warning("Downloaded data column names do not match with schema")
+                raise Exception("Downloaded data column names do not match with schema")
+
             # Assigment validate training and testing dataset using schema file
             #1. Number of Column
             #2. Change column Names as per schema file
             #3. Check Categories for categorical columns 
 
             ## Will be implemented later
-            schema_validation_status = True
+            
             return schema_validation_status 
+
         except Exception as e:
             raise CustomeException(e,sys) from e
 
