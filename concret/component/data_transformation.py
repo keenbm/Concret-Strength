@@ -208,14 +208,17 @@ class DataTransformation:
             save_numpy_array_data(file_path=transformed_test_file_path,array=test_arr)
             
             # Also Additionaly storing Tansformed Data in CSV for Testing
-            # transfomed_train_df=pd.DataFrame(input_feature_train_arr)
-            # transfomed_train_df = pd.concat([transfomed_train_df, target_feature_train_df], axis=1)
-            # transfomed_train_df.to_csv(transformed_train_file_path.replace(".npz",".csv"),index = False)
-
+            new_col_name=list(schema[COLUMNS_NAME_AFTER_TRANSFORMATION_KEY])
             
-            # transfomed_test_df=pd.DataFrame(input_feature_test_arr)
-            # transfomed_test_df = pd.concat([transfomed_test_df, target_feature_test_df], axis=1)
-            # transfomed_test_df.to_csv(transformed_test_file_path.replace(".npz",".csv"),index = False)
+            transfomed_train_df=pd.DataFrame(input_feature_train_arr)
+            transfomed_train_df = pd.concat([transfomed_train_df, target_feature_train_df], axis=1)
+            transfomed_train_df.columns=new_col_name
+            transfomed_train_df.to_csv(transformed_train_file_path.replace(".npz",".csv"),index = False)
+            
+            transfomed_test_df=pd.DataFrame(input_feature_test_arr)
+            transfomed_test_df = pd.concat([transfomed_test_df, target_feature_test_df], axis=1)
+            transfomed_test_df.columns=new_col_name
+            transfomed_test_df.to_csv(transformed_test_file_path.replace(".npz",".csv"),index = False)
             
 
             # Getting path for storing Transformation / Pre-processing pickle file
