@@ -196,7 +196,7 @@ class Configuration():
 
             data_transformation_config_info=self.config_info[DATA_TRANSFORMATION_CONFIG_KEY]
 
-            add_new_col=data_transformation_config_info[DATA_TRANSFORMATION_ADD_NEW_COL_KEY]
+            add_total_aggregate=data_transformation_config_info[DATA_TRANSFORMATION_ADD_NEW_COL_KEY]
 
 
             preprocessed_object_file_path = os.path.join(data_transformation_artifact_dir,
@@ -214,7 +214,7 @@ class Configuration():
                                                 data_transformation_config_info[DATA_TRANSFORMATION_TEST_DIR_NAME_KEY])
             
 
-            data_transformation_config=DataTransformationConfig(add_new_col=add_new_col,
+            data_transformation_config=DataTransformationConfig(add_total_aggregate=add_total_aggregate,
                                                                 preprocessed_object_file_path=preprocessed_object_file_path,
                                                                 transformed_train_dir=transformed_train_dir,
                                                                 transformed_test_dir=transformed_test_dir)
