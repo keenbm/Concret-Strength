@@ -15,4 +15,5 @@ dvc
 dill
 xlrd
 evidently
+mlflow
 -e .

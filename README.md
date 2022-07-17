@@ -26,13 +26,14 @@
    |   |  └──model_trainer.py
    |   ├──config
    |   |  ├──_init_.py
-   |   |  └──configuration.py --> Class and methods coded to get confuguration data (returns configuration data(entity) having format defined in entity)
+   |   |  └──configuration.py --> Class and methods coded to get confuguration data (returns configuration data(entity) having forma defined in entity)
    |   ├──constant
    |   |  └──_init_.py
    |   ├──entity
    |   |  ├──_init_.py
    |   |  ├──artifact_entity.py --> For defining Named tuple skeleton for artifact related operation
-   |   |  └──config_entity.py --> For defining Named tuple skeleton for configuration related operation
+   |   |  ├──config_entity.py --> For defining Named tuple skeleton for configuration related operation
+   |   |  └──model_factory.py --> For training model and creating YAML template for training model
    |   ├──exception
    |   |  └──_init_.py
    |   ├──logger
