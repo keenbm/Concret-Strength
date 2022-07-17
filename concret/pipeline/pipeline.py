@@ -13,6 +13,7 @@ from concret.component.data_transformation import DataTransformation
 from concret.component.model_trainer import ModelTrainer
 from concret.component.model_evaluation import ModelEvaluation
 
+import mlflow
 
 
 class Pipeline:
@@ -98,11 +99,11 @@ class Pipeline:
             data_transformation_artifact = self.start_data_transformation(data_ingestion_artifact=data_ingestion_artifact,
                                                                           data_validation_artifact=data_validation_artifact)
             model_trainer_artifact=self.start_model_trainer(data_transformation_artifact)
-
+            
             model_evaluation_artifact = self.start_model_evaluation(data_ingestion_artifact=data_ingestion_artifact,
                                                                     data_validation_artifact=data_validation_artifact,
-                                                                    model_trainer_artifact=model_trainer_artifact)  
-
+                                                                    model_trainer_artifact=model_trainer_artifact)
+            
         
         except Exception as e:
             raise CustomException(e,sys) from e

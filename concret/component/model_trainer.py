@@ -1,6 +1,6 @@
 
 from concret.exception import CustomException
-import sys
+import os,sys
 from concret.logger import logging
 from typing import List
 from concret.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact
@@ -20,6 +20,8 @@ class ConcretEstimatorModel:
         TrainedModel constructor
         preprocessing_object: preprocessing_object
         trained_model_object: trained_model_object
+        This class combined preprocessin object and Trained model object
+        This Class object we are saving as final pickle file (model)
         """
         self.preprocessing_object = preprocessing_object
         self.trained_model_object = trained_model_object
@@ -80,32 +82,41 @@ class ModelTrainer:
             logging.info(f"Expected accuracy: {base_accuracy}")
 
             logging.info(f"Initiating operation model selecttion")
+            # Getting best model based on  TRAINING DATA SET
             best_model = model_factory.get_best_model(X=x_train,y=y_train,base_accuracy=base_accuracy)
-            #getting best model on training datset
+            
             
             logging.info(f"Best model found on training dataset: {best_model}")
             
             logging.info(f"Extracting trained model list.")
             grid_searched_best_model_list:List[GridSearchedBestModel]=model_factory.grid_searched_best_model_list
             
-            #evaludation models on both training & testing datset -->model object
+            
             model_list = [model.best_model for model in grid_searched_best_model_list ]
             logging.info(f"Evaluation all trained model on training and testing dataset both")
+            #evaludation models on both training & testing datset -->model object
+            # Here BEST MODEL is selected based on both Training and Testing accuracy.
+            # Most generalized model will be selected
             metric_info:MetricInfoArtifact = evaluate_regression_model(model_list=model_list,X_train=x_train,y_train=y_train,X_test=x_test,y_test=y_test,base_accuracy=base_accuracy)
-
             logging.info(f"Best found model on both training and testing dataset.")
             
             preprocessing_obj=  load_object(file_path=self.data_transformation_artifact.preprocessed_object_file_path)
             model_object = metric_info.model_object
 
-
             trained_model_file_path=self.model_trainer_config.trained_model_file_path
-            #custom model object by combining both preprocessing obj and model obj
+            
+            # Here both preprocessing pickle and best model pickel file combined
+            # and saved as single combined pickel file
+            # custom model object by combining both preprocessing obj and model obj
             concret_model = ConcretEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
             
-            #saving custom model object
+            #saving combined model object in pickel format
             logging.info(f"Saving model at path: {trained_model_file_path}")
             save_object(file_path=trained_model_file_path,obj=concret_model)
+
+            #saving Ml model without preprocessing_object
+            #file_path_model_without_preprocessing=trained_model_file_path.replace("model.pkl","model_without_preprocessing.pkl")
+            #save_object(file_path=file_path_model_without_preprocessing,obj=model_object)
 
 
             model_trainer_artifact=  ModelTrainerArtifact(is_trained=True,message="Model Trained successfully",
@@ -118,7 +129,30 @@ class ModelTrainer:
             )
 
             logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
-            #return model_trainer_artifact
+
+            ## Logging Information using MLFlow
+            with mlflow.start_run():
+                
+                # Logginh Parameter in ML Floe
+                for k,v in concret_model.trained_model_object.get_params().items():
+                    mlflow.log_param(f"{k}",v)
+                
+                mlflow.log_metric("train_rmse",model_trainer_artifact.train_rmse)
+                mlflow.log_metric("test_rmse",model_trainer_artifact.test_rmse)
+                mlflow.log_metric("train_accuracy",model_trainer_artifact.train_accuracy)
+                mlflow.log_metric("test_accuracy",model_trainer_artifact.test_accuracy)
+                mlflow.log_metric("model_accuracy",model_trainer_artifact.model_accuracy)
+
+                
+                
+                mlflow.log_artifact(model_trainer_artifact.trained_model_file_path,"Model")
+                mlflow.log_text(f"Model Stored at : {model_trainer_artifact.trained_model_file_path}", "Model/model_okl_file_location.txt")
+                mlflow.log_text(f"Transformation Pipeline data : {concret_model.preprocessing_object}", "Model/pre_processing_pipeline.txt")
+                mlflow.log_text(f"ML Model Parameter : {concret_model.trained_model_object.get_params()}", "Model/ML_Model_Param.txt")
+                #str()
+                
+
+            
             return model_trainer_artifact
         except Exception as e:
             raise CustomException(e, sys) from e
