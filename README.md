@@ -100,7 +100,7 @@
     get_sample_model_config_yaml_file(export_dir="config")
     '''
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="Concret-Strength/readme Imgs/Model Config YAML-1.PNG">
+  <srcset="Concret-Strength/readme Imgs/Model Config YAML-1.PNG">
 </picture>
 
     After modifying model factory YAML file (refer below image):
