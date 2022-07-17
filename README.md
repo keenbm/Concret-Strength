@@ -101,7 +101,7 @@
     get_sample_model_config_yaml_file(export_dir="config")
     ```
     
-![title](https://github.com/keenbm/Concret-Strength/blob/main/readme%20Imgs/Model_Config_YAML-1.PNG?raw=true)
+![title](Concret-Strength/readme Imgs/Model_Config_YAML-1.PNG)
     
     After modifying model factory YAML file (refer below image):
     This YAML file an be used for model training_pipeline_info
