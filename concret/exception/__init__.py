@@ -3,7 +3,7 @@ import sys
 
 
 ## Creating Custome Exception Class
-class CustomeException(Exception):
+class CustomException(Exception):
     '''
     Description : This Calls if for custome exception
     Use : This class will gives exception message along with exact line number
@@ -12,13 +12,13 @@ class CustomeException(Exception):
     try:
         code
     except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
     '''
 
     def __init__(self,error_message:Exception,error_detail:sys):
 
         super().__init__(error_message) ## Inhereting from python in-built Exception class
-        self.error_message=CustomeException.get_detailed_error_message(error_message=error_message,
+        self.error_message=CustomException.get_detailed_error_message(error_message=error_message,
                                                                        error_detail=error_detail)
     
    
@@ -47,14 +47,14 @@ class CustomeException(Exception):
         '''
         To represents the class objects as a string 
         when object print(myObject.__str__())
-        is gives output as CustomeException(error_message:Exception,error_detail:sys)
+        is gives output as CustomException(error_message:Exception,error_detail:sys)
         '''
-        # If we dont use __str__ method output will be pointer of object : <__main__.CustomeException object at 0x7f5cbb8eb1f0>
+        # If we dont use __str__ method output will be pointer of object : <__main__.CustomException object at 0x7f5cbb8eb1f0>
         return self.error_message
 
 
     def __repr__(self) -> str:
         '''
-        This print object as pointer : <__main__.CustomeException object at 0x7f5cbb8eb1f0>
+        This print object as pointer : <__main__.CustomException object at 0x7f5cbb8eb1f0>
         '''
-        return CustomeException.__name__.str()
+        return CustomException.__name__.str()

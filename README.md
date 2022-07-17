@@ -88,6 +88,22 @@
       - Also, data_ingestion(),data_validation() etc etc. classe object to be passed in pipeline class internal methods
       - So, this file basically collect configuration and perform ML lifecycle task sequentialy
 
+12. Entity > model_factory.py
+    '''
+    from concret.entity.model_factory import ModelFactory,get_sample_model_config_yaml_file
+    get_sample_model_config_yaml_file(export_dir="config")
+    '''
+
+    nodel_factory.py -> For preparig Model.
+    When below code executed , it creates YAML template for model confuguration
+    '''
+    get_sample_model_config_yaml_file(export_dir="config")
+    '''
+    /readme Imgs/Model Config YAML-1.PNG
+
+    After modifying model factory YAML file (refer below image):
+    This YAML file an be used for model training_pipeline_info
+
 
 
 ## Pending Items :

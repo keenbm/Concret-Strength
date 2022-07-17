@@ -1,7 +1,7 @@
 from concret.config.configuration import Configuration
 from concret.constant import *
 
-from concret.exception import CustomeException
+from concret.exception import CustomException
 from concret.logger import logging
 import sys
 
@@ -22,7 +22,7 @@ class Pipeline:
             self.config=config ## self.config is -> Configuration() class object
                                ## This objectcan be used throughout Pipeline() class as self.config
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
     def start_data_ingestion(self)->DataIngestionArtifact:
@@ -35,7 +35,7 @@ class Pipeline:
             return data_ingestion.initiate_data_ingestion()
 
         except Exception as e:
-            raise CustomeException(e,sys) from e 
+            raise CustomException(e,sys) from e 
 
     def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact) \
             -> DataValidationArtifact:
@@ -45,7 +45,7 @@ class Pipeline:
 
             return data_validation.initiate_data_validation()
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def start_data_transformation(self,
                                   data_ingestion_artifact: DataIngestionArtifact,
@@ -59,7 +59,7 @@ class Pipeline:
             )
             return data_transformation.initiate_data_transformation()
         except Exception as e:
-            raise CustomeException(e, sys)    
+            raise CustomException(e, sys)    
 
     def start_mdoel_trainer(self):
         pass 
@@ -79,4 +79,4 @@ class Pipeline:
                                                                           data_validation_artifact=data_validation_artifact)
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e

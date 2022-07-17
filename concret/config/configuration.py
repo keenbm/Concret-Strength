@@ -13,7 +13,7 @@ from concret.util.util import read_yaml_file
 ## Importing constans from constant module
 from concret.constant import *
 
-from concret.exception import CustomeException
+from concret.exception import CustomException
 from concret.logger import logging
 import sys
 

@@ -5,7 +5,7 @@ from concret.entity.artifact_entity import DataValidationArtifact
 from concret.constant import *
 from concret.util.util import read_yaml_file
 
-from concret.exception import CustomeException
+from concret.exception import CustomException
 from concret.logger import logging
 import sys
 import os
@@ -32,7 +32,7 @@ class DataValidation:
             self.data_validation_config = data_validation_config
             self.data_ingestion_artifact = data_ingestion_artifact
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
     
 
     def get_train_and_test_df(self):
@@ -41,7 +41,7 @@ class DataValidation:
             test_df = pd.read_csv(self.data_ingestion_artifact.test_file_path)
             return train_df,test_df
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def is_train_test_file_exists(self)->bool:
         '''
@@ -65,7 +65,7 @@ class DataValidation:
             return is_available
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def validate_dataset_schema(self)->bool:
         '''
@@ -109,7 +109,7 @@ class DataValidation:
             return schema_validation_status 
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def get_and_save_data_drift_report(self):
         '''
@@ -137,7 +137,7 @@ class DataValidation:
                 json.dump(report, report_file, indent=6)
             return report
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def save_data_drift_report_page(self):
         '''
@@ -155,7 +155,7 @@ class DataValidation:
 
             dashboard.save(report_page_file_path)
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def is_data_drift_found(self)->bool:
         '''
@@ -170,7 +170,7 @@ class DataValidation:
             ## To be implemented --> Actual result for the is_data_drift_found to be fetched from JSON report and retured
             return True
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
     def initiate_data_validation(self)->DataValidationArtifact:
@@ -188,7 +188,7 @@ class DataValidation:
             logging.info(f"Data validation artifact: {data_validation_artifact}")
             return data_validation_artifact
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
     
 
     def __del__(self):

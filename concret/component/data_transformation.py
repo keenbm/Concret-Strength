@@ -1,6 +1,6 @@
 from cgi import test
 from sklearn import preprocessing
-from concret.exception import CustomeException
+from concret.exception import CustomException
 from concret.logger import logging
 from concret.constant import *
 from concret.util.util import read_yaml_file,save_object,save_numpy_array_data,load_data
@@ -46,7 +46,7 @@ class FeatureGenerator(BaseEstimator, TransformerMixin):
             self.Fine_Aggregate_ix = Fine_Aggregate_ix
 
         except Exception as e:
-            raise CustomeException(e, sys) from e
+            raise CustomException(e, sys) from e
 
 
     def fit(self, X, y=None):
@@ -66,7 +66,7 @@ class FeatureGenerator(BaseEstimator, TransformerMixin):
             return generated_feature
 
         except Exception as e:
-            raise CustomeException(e, sys) from e
+            raise CustomException(e, sys) from e
 
 
 
@@ -84,7 +84,7 @@ class DataTransformation:
             self.data_validation_artifact = data_validation_artifact
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
     
     
 
@@ -143,7 +143,7 @@ class DataTransformation:
             return preprocessing
 
         except Exception as e:
-            raise CustomeException(e,sys) from e   
+            raise CustomException(e,sys) from e   
  
 
     def initiate_data_transformation(self)->DataTransformationArtifact:
@@ -239,7 +239,7 @@ class DataTransformation:
             logging.info(f"Data transformationa artifact: {data_transformation_artifact}")
             return data_transformation_artifact
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     def __del__(self):
         logging.info(f"{'>>'*30}Data Transformation log completed.{'<<'*30} \n\n")

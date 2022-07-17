@@ -4,7 +4,7 @@ from concret.entity.artifact_entity import DataIngestionArtifact
 ## Importing constans from constant module
 from concret.constant import *
 
-from concret.exception import CustomeException
+from concret.exception import CustomException
 from concret.logger import logging
 import sys
 import os
@@ -35,7 +35,7 @@ class DataIngestion:
             #logging.info(f"Printing data_ingestion_config : {data_ingestion_config()}")
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
     def download_data(self,) -> str:
@@ -63,7 +63,7 @@ class DataIngestion:
             return downloaded_file_path
 
         except Exception as e:
-            raise CustomeException(e,sys) from e        
+            raise CustomException(e,sys) from e        
 
 
     def extract_downloaded_data(self,downloaded_file_path):
@@ -93,7 +93,7 @@ class DataIngestion:
             # This function can be modified used for extracting data if downloaded data is in zip ,tar format
 
         except Exception as e:
-            raise CustomeException(e,sys) from e  
+            raise CustomException(e,sys) from e  
 
 
     def split_data_as_train_test(self,)->DataIngestionArtifact:
@@ -137,7 +137,7 @@ class DataIngestion:
             
             return data_ingestion_artifact
         except Exception as e:
-            raise CustomeException(e,sys) from e  
+            raise CustomException(e,sys) from e  
 
     def initiate_data_ingestion(self)-> DataIngestionArtifact:
         '''
@@ -154,7 +154,7 @@ class DataIngestion:
             return data_ingestion_artifact
 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
     # This method executed when this class is destroyed
     def __del__(self):

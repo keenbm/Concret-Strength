@@ -47,6 +47,6 @@ columns_name_after_transformation:
   - Superplasticizer
   - Coarse_Aggregate
   - Fine_Aggregate
-  - Total_Aggregate
   - Age
+  - Total_Aggregate
   - Concrete_Compressive_Strength
