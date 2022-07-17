@@ -97,9 +97,11 @@
     nodel_factory.py -> For preparig Model.
     When below code executed , it creates YAML template for model confuguration
     
-    '''
+    ```bash
     get_sample_model_config_yaml_file(export_dir="config")
-    '''
+    ```
+    
+    /readme Imgs/Model Config YAML-1.PNG
     
     After modifying model factory YAML file (refer below image):
     This YAML file an be used for model training_pipeline_info
