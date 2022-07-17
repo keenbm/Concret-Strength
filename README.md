@@ -110,6 +110,17 @@
 
 ![title](/readme_Imgs/Model_Config_YAML-2.PNG)
 
+After Creating and updating YAML file use
+```bash
+model_factory=ModelFactory(model_config_path=mode_config_path)
+best_model=model_factory.get_best_model(X,Y)
+
+## Diff function available in Model Factory
+1. best_model.best_model()
+2. model_factory.grid_searched_best_model_list[0]
+3. model_factory.initialized_model_list
+```
+
 ## Pending Items :
 - data_validation --> Checking details to be coded
 - data_validation --> Previous dataset Vs. Current dataset data drift checking code to be added
