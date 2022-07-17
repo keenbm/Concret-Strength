@@ -99,7 +99,9 @@
     '''
     get_sample_model_config_yaml_file(export_dir="config")
     '''
-![This is an image] (/readme Imgs/Model Config YAML-1.PNG)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/readme Imgs/Model Config YAML-1.PNG">
+</picture>
 
     After modifying model factory YAML file (refer below image):
     This YAML file an be used for model training_pipeline_info
