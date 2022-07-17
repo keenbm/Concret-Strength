@@ -38,49 +38,25 @@ class Configuration():
         When configuration() class object is created , it'll read YAML file and get/fetch all configuration (entity/namedtuple) 
         in this __init__ method
         '''
-        self.config_info=read_yaml_file(file_path=config_file_path) # readnig YAML file and assigning to object variable config_info
-                                                                    # reading YAML file calling all get menthod define in this 
-                                                                    # function to get configuration entatied
-        
-        
-
-        self.training_pipeline_config=self.get_training_pipeline_config() ## In return value will be TrainingPipelineConfig (entity/namedtuple)
-        
-        self.time_stamp=current_time_stamp
-
-        self.data_ingestion_config=self.get_data_ingestion_config()
-
-        self.data_validation_config=self.get_data_validation_config()
-
-        self.data_transformation_config=self.get_data_transformation_config()
-
-        self.model_trainer_config=self.get_model_trainer_config()
-
-        self.model_evaluation_config=self.get_model_evaluation_config()
-
-        self.model_pusher_config=self.get_model_pusher_config()
-    
-
-
-    def get_training_pipeline_config(self) -> TrainingPipelineConfig:
-        '''
-        Info:
-        Read Specific values from YAML file with the help of keys defined in CONSTANT module
-        TrainingPipelineConfig = namedtuple("TrainingPipelineConfig", ["artifact_dir"]) --> Defined in entity > config_entity.py
-        Need to assign one argument for "artifact_dir" to create TrainingPipelineConfig entity/namedTuple
-        '''
         try:
-            training_pipeline_info=self.config_info[TRAINING_PIPELINE_CONFIG_KEY]
-            artifact_dir=os.path.join(ROOT_DIR,     
-                                      training_pipeline_info[TRAINING_PIPELINE_NAME_KEY],
-                                      training_pipeline_info[TRAINING_PIPELINE_ARTIFACT_DIR_KEY])
-            training_pipeline_info=TrainingPipelineConfig(artifact_dir=artifact_dir) ## using TrainingPipelineConfig defined in entity > config_entity.py
-            logging.info(f"Training Pipeline Configuration created as : {training_pipeline_info}")
-            return training_pipeline_info
-
-        except Exception as e:
-            raise CustomeException(e,sys) from e
+            self.config_info=read_yaml_file(file_path=config_file_path) # readnig YAML file and assigning to object variable config_info
+                                                                        # reading YAML file calling all get menthod define in this 
+                                                                        # function to get configuration entatied
             
+            
+
+            self.training_pipeline_config=self.get_training_pipeline_config() ## In return value will be TrainingPipelineConfig (entity/namedtuple)            
+            self.time_stamp=current_time_stamp
+            #self.data_ingestion_config=self.get_data_ingestion_config()
+            #self.data_validation_config=self.get_data_validation_config()
+            #self.data_transformation_config=self.get_data_transformation_config()
+            #self.model_trainer_config=self.get_model_trainer_config()
+            #self.model_evaluation_config=self.get_model_evaluation_config()
+            #self.model_pusher_config=self.get_model_pusher_config()
+        except Exception as e:
+            raise CustomException(e,sys)  from e
+    
+          
 
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         '''
@@ -139,7 +115,7 @@ class Configuration():
             return data_ingestion_info
 
         except Exception as e:
-            raise CustomeException(e,sys)  from e
+            raise CustomException(e,sys)  from e
  
 
 
@@ -176,7 +152,7 @@ class Configuration():
             logging.info(f"Data Validation Configuration created as : {data_validation_config}")
             return data_validation_config 
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
 
@@ -223,19 +199,45 @@ class Configuration():
             
             return data_transformation_config
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
 
     def get_model_trainer_config(self) -> ModelTrainerConfig:
         '''
-        Info:
-
+        Info:Use for Model Training Configuration
+        Creating and returning ModelTrainerConfig
         '''
         try:
-            pass
+            artifact_dir = self.training_pipeline_config.artifact_dir
+
+            model_trainer_artifact_dir=os.path.join(
+                artifact_dir,
+                MODEL_TRAINER_ARTIFACT_DIR,
+                self.time_stamp
+            )
+            model_trainer_config_info = self.config_info[MODEL_TRAINER_CONFIG_KEY]
+            trained_model_file_path = os.path.join(model_trainer_artifact_dir,
+            model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_DIR_KEY],
+            model_trainer_config_info[MODEL_TRAINER_TRAINED_MODEL_FILE_NAME_KEY]
+            )
+
+            model_config_file_path = os.path.join(model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_DIR_KEY],
+            model_trainer_config_info[MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY]
+            )
+
+            base_accuracy = model_trainer_config_info[MODEL_TRAINER_BASE_ACCURACY_KEY]
+
+            model_trainer_config = ModelTrainerConfig(
+                trained_model_file_path=trained_model_file_path,
+                base_accuracy=base_accuracy,
+                model_config_file_path=model_config_file_path
+            )
+
+            logging.info(f"Model trainer config: {model_trainer_config}")
+            return model_trainer_config
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
 
@@ -245,9 +247,20 @@ class Configuration():
 
         '''
         try:
-            pass
+            model_evaluation_config = self.config_info[MODEL_EVALUATION_CONFIG_KEY]
+            artifact_dir = os.path.join(self.training_pipeline_config.artifact_dir,
+                                        MODEL_EVALUATION_ARTIFACT_DIR, )
+
+            model_evaluation_file_path = os.path.join(artifact_dir,
+                                                    model_evaluation_config[MODEL_EVALUATION_FILE_NAME_KEY])
+            response = ModelEvaluationConfig(model_evaluation_file_path=model_evaluation_file_path,
+                                            time_stamp=self.time_stamp)
+            
+            
+            logging.info(f"Model Evaluation Config: {response}.")
+            return response
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
 
 
 
@@ -257,6 +270,33 @@ class Configuration():
 
         '''
         try:
-            pass
+            time_stamp = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            model_pusher_config_info = self.config_info[MODEL_PUSHER_CONFIG_KEY]
+            export_dir_path = os.path.join(ROOT_DIR, model_pusher_config_info[MODEL_PUSHER_MODEL_EXPORT_DIR_KEY],
+                                           time_stamp)
+
+            model_pusher_config = ModelPusherConfig(export_dir_path=export_dir_path)
+            logging.info(f"Model pusher config {model_pusher_config}")
+            return model_pusher_config
         except Exception as e:
-            raise CustomeException(e,sys) from e
+            raise CustomException(e,sys) from e
+    
+
+    def get_training_pipeline_config(self) -> TrainingPipelineConfig:
+        '''
+        Info:
+        Read Specific values from YAML file with the help of keys defined in CONSTANT module
+        TrainingPipelineConfig = namedtuple("TrainingPipelineConfig", ["artifact_dir"]) --> Defined in entity > config_entity.py
+        Need to assign one argument for "artifact_dir" to create TrainingPipelineConfig entity/namedTuple
+        '''
+        try:
+            training_pipeline_info=self.config_info[TRAINING_PIPELINE_CONFIG_KEY]
+            artifact_dir=os.path.join(ROOT_DIR,     
+                                      training_pipeline_info[TRAINING_PIPELINE_NAME_KEY],
+                                      training_pipeline_info[TRAINING_PIPELINE_ARTIFACT_DIR_KEY])
+            training_pipeline_config = TrainingPipelineConfig(artifact_dir=artifact_dir) ## using TrainingPipelineConfig defined in entity > config_entity.py
+            logging.info(f"Training Pipeline Configuration created as : {training_pipeline_config }")
+            return training_pipeline_config 
+
+        except Exception as e:
+            raise CustomException(e,sys) from e

@@ -1,3 +1,7 @@
+# This YAML File template Can be generated using 
+# from concret.entity.model_factory import ModelFactory,get_sample_model_config_yaml_file
+# get_sample_model_config_yaml_file(export_dir="config")
+
 grid_search:
   class: GridSearchCV
   module: sklearn.model_selection
