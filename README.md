@@ -102,11 +102,13 @@
     ```
     
 ![title](/readme_Imgs/Model_Config_YAML-1.PNG)
-    
-    After modifying model factory YAML file (refer below image):
+
+
+    After modifying YAML file created model factory  (refer below image):
     This YAML file an be used for model training_pipeline_info
 
 
+![title](/readme_Imgs/Model_Config_YAML-2.PNG)
 
 ## Pending Items :
 - data_validation --> Checking details to be coded
