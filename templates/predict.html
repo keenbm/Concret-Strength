@@ -1,0 +1,115 @@
+{% extends 'header.html' %}
+
+{% block head %}
+
+
+<title>Concrete Compressive Strength Predictor</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
+
+
+        <form action="/predict" method="post">
+            <legend>Concrete Compressive Strength Prediction Form</legend>
+            <div class="mb-3">
+                <label class="form-label">Cement</label>
+                <input class="form-control" type="text" name="Cement" placeholder="Enter a value of Cement (kg in a m^3 mixture)"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Furnace_Slag</label>
+                <input class="form-control" type="text" name="Furnace_Slag" placeholder="Enter a value of Blast Furnace Slag (kg in a m^3 mixture)"
+                    required />
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fly_Ash</label>
+                <input class="form-control" type="text" name="Fly_Ash"
+                    placeholder="Fly Ash (kg in a m^3 mixture)" />
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Water</label>
+                <input class="form-control" type="text" name="Water" placeholder="Enter a value of Water (kg in a m^3 mixture)"
+                    required />
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Superplasticizer</label>
+                <input class="form-control" type="text" name="Superplasticizer"
+                    placeholder="Enter a value of Superplasticizer (kg in a m^3 mixture)" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Coarse_Aggregate</label>
+                <input class="form-control" type="text" name="Coarse_Aggregate" placeholder="Enter a value of Coarse Aggregate (kg in a m^3 mixture)"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fine_Aggregate</label>
+                <input class="form-control" type="text" name="Fine_Aggregate" placeholder="Enter a value of Fine Aggregate (kg in a m^3 mixture)"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input class="form-control" type="text" name="Age"
+                    placeholder="Age (day)" required />
+            </div>
+            
+            <div class="mb-3">
+
+                <input class="btn btn-primary" type="submit" value="Predict Concrete Compressive Strength" required />
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                Concrete Compressive Strength
+            </div>
+            <div class="card-body">
+        {% if context['concret_data'] is not none %}
+        <table class="table table-striped">
+            <caption>Concrete Compressive Strength Estimation </caption>
+            <tr>
+                <th>Input Feature</th>
+                <th>Feature Value</th>
+
+            </tr>
+            {% for column,value in context['concret_data'].items() %}
+
+
+
+            <tr>
+                <td>{{column}}</td>
+                <td>{{value[0]}}</td>
+            </tr>
+
+            {% endfor %}
+            <tr>
+
+                <td>Concrete Compressive Strength </td>
+                <td>
+                    {{ context['concrete_compressive_strength'] }}
+                </td>
+            </tr>
+        </table>
+
+        {% else %}
+       
+              <h5 class="card-title">Submit Form</h5>
+              <p class="card-text">Kindly provide necessary information to estimate Concrete Compressive Strength</p>
+            
+         
+
+        {% endif %}
+        Go to <a href="/" class="btn btn-primary">Home</a>
+    </div>
+</div>
+    </div>
+
+    {% endblock %}

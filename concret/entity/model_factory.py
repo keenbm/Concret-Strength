@@ -6,6 +6,7 @@ import yaml
 from concret.exception import CustomException
 import os
 import sys
+import mlflow
 
 from collections import namedtuple
 from typing import List
@@ -177,12 +178,15 @@ class ModelFactory:
 
     @staticmethod
     def update_property_of_class(instance_ref:object, property_data: dict):
+        ## it construct model as LinerRegression.fit_intercept = true
+        ## module_1->RandomForestRegressor.min_samples_leaf = 3
         try:
             if not isinstance(property_data, dict):
                 raise Exception("property_data parameter required to dictionary")
             print(property_data)
             for key, value in property_data.items():
                 logging.info(f"Executing:$ {str(instance_ref)}.{key}={value}")
+                ## i.e. instance_ref = LinerRegression , key=fit_intercept , value=3
                 setattr(instance_ref, key, value)
             return instance_ref
         except Exception as e:
@@ -201,9 +205,13 @@ class ModelFactory:
     def class_for_name(module_name:str, class_name:str):
         try:
             # load the module, will raise ImportError if module cannot be loaded
+            ## i.e. this is equv. to --> import sklearn.linear_model as module
             module = importlib.import_module(module_name)
             # get the class, will raise AttributeError if class cannot be found
             logging.info(f"Executing command: from {module} import {class_name}")
+            
+            # this fetch class_name from module
+            # i.e. fetch LinerRegression class from sklearn.linear_model
             class_ref = getattr(module, class_name)
             return class_ref
         except Exception as e:
@@ -257,20 +265,40 @@ class ModelFactory:
         """
         try:
             initialized_model_list = []
+
+            ## This Iterate over all model mentionrf in YAML file
+            ## i.e. Model_0 ,model_2... 
             for model_serial_number in self.models_initialization_config.keys():
 
+                ## get all the parameter,hyperparameter mention for model in YAML file
                 model_initialization_config = self.models_initialization_config[model_serial_number]
+                
+                ## Class for name imports specific library for model
+                ## For 1st model in YAML class: LinearRegression
+                ## module: sklearn.linear_model
                 model_obj_ref = ModelFactory.class_for_name(module_name=model_initialization_config[MODULE_KEY],
                                                             class_name=model_initialization_config[CLASS_KEY]
                                                             )
-                model = model_obj_ref()
                 
+                # here assigned value to model is --> model = sklearn.linear_model.LinerRegression()
+                # model is LinearRegression() class object
+                # this will iterated for each model and saved into named tuple InitializedModelDetail
+                model = model_obj_ref()
+
+                ## If Parameters are mentioned for model in YAML then , add those parameter in model
+                ## i.e module_0 -> Parameter =  fit_intercept: true
+                ## it construct model as LinerRegression.fit_intercept = true
+                ## module_1->RandomForestRegressor.min_samples_leaf = 3
+
                 if PARAM_KEY in model_initialization_config:
                     model_obj_property_data = dict(model_initialization_config[PARAM_KEY])
                     model = ModelFactory.update_property_of_class(instance_ref=model,
                                                                   property_data=model_obj_property_data)
 
+                # Fetching search_param_grid from YAML file for
+                # Hyperparameter tuning using GridSearchCV
                 param_grid_search = model_initialization_config[SEARCH_PARAM_GRID_KEY]
+
                 model_name = f"{model_initialization_config[MODULE_KEY]}.{model_initialization_config[CLASS_KEY]}"
 
                 model_initialization_config = InitializedModelDetail(model_serial_number=model_serial_number,
@@ -278,7 +306,7 @@ class ModelFactory:
                                                                      param_grid_search=param_grid_search,
                                                                      model_name=model_name
                                                                      )
-
+                
                 initialized_model_list.append(model_initialization_config)
 
             self.initialized_model_list = initialized_model_list
@@ -310,10 +338,18 @@ class ModelFactory:
                                                               initialized_model_list: List[InitializedModelDetail],
                                                               input_feature,
                                                               output_feature) -> List[GridSearchedBestModel]:
-
+        '''
+        Perform GridSearchCV operation
+        # Best model (Menioned in YAML) from each algo. will be added in list
+        # best of module_0 , best of module_1
+        # i.e. [LinerRegression(fit_intercept=False),RandomForest(min_samples_leaf=3, min_samples_leaf=4,n_estimators=100)]
+        '''
         try:
             self.grid_searched_best_model_list = []
             for initialized_model_list in initialized_model_list:
+                ## initiate_best_parameter_search_for_initialized_model take one model and It's Hyperparameter
+                ## and perform GridSearchCV function
+                ## initiate_best_parameter_search_for_initialized_model -- > Used for multiple model GridSearch operation
                 grid_searched_best_model = self.initiate_best_parameter_search_for_initialized_model(
                     initialized_model=initialized_model_list,
                     input_feature=input_feature,
@@ -359,13 +395,22 @@ class ModelFactory:
     def get_best_model(self, X, y,base_accuracy=0.6) -> BestModel:
         try:
             logging.info("Started Initializing model from config file")
+            
+            # Fetch All Model Model with It's Training Parametre and HyperParameter for Grid SerchCV operation
             initialized_model_list = self.get_initialized_model_list()
             logging.info(f"Initialized model: {initialized_model_list}")
+            #mlflow.log_text(str(initialized_model_list), "Model/Initialized_models.txt")
+
+            # Start Grid Search CV operation and get best model
+            # i.e. [LinerRegression(fit_intercept=False),RandomForest(min_samples_leaf=3, min_samples_leaf=4,n_estimators=100)]
+            # Best model (Menioned in YAML) from each algo. will be added in list
+            # best of module_0 , best of module_1
             grid_searched_best_model_list = self.initiate_best_parameter_search_for_initialized_models(
                 initialized_model_list=initialized_model_list,
                 input_feature=X,
-                output_feature=y
-            )
+                output_feature=y)
+
+            # Return one best Model from GridSearchCV best model list
             return ModelFactory.get_best_model_from_grid_searched_best_model_list(grid_searched_best_model_list,
                                                                                   base_accuracy=base_accuracy)
         except Exception as e:

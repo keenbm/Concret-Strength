@@ -1,0 +1,1 @@
+Model Stored at : G:\1.DataScience\Projects\Concret-Strength\concret\artifact\model_trainer\2022-07-18-12-28-12\trained_model\model.pkl

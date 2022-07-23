@@ -1,0 +1,4 @@
+artifact_location: file:///G:/1.DataScience/Projects/Concret-Strength/mlruns/2
+experiment_id: '2'
+lifecycle_stage: active
+name: Concret_Strength_Model
