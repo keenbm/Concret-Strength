@@ -1,4 +1,4 @@
 artifact_location: file:///G:/1.DataScience/Projects/Concret-Strength/mlruns/1
 experiment_id: '1'
 lifecycle_stage: active
-name: ModelSearchBegin
+name: Concret_Strength_Model

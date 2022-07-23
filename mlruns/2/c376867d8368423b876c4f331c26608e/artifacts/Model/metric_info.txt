@@ -1,1 +1,0 @@
-MetricInfoArtifact(model_name='LinearRegression()', model_object=LinearRegression(), train_rmse=10.518437481317495, test_rmse=9.80433771146284, train_accuracy=0.6105446948215688, test_accuracy=0.6269612229927441, model_accuracy=0.6186440695704206, index_number=0)
